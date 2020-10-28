@@ -1,25 +1,19 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+    "name": "Hardcore Study",
+    "version": "1.0",
+    "manifest_version": 2,
+    "browser_action": {
+        "default_popup": "index.html"
     },
-    {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
+    "background": {
+        "scripts": ["app/background.js"],
+        "persistent": false
     },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["notif/script.js"]
+        }
+    ],
+    "content_security_policy": "script-src 'self' 'sha256-QlM0JGHbX/dMtSTyJ+mM5lxYDquOJGC66BOGQwIz5Os='; object-src 'self'"
 }
