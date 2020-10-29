@@ -1,54 +1,63 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-
-import { useForm } from '../../hooks/useForm'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
 
 import logo from '../../assets/logo.png'
 import styles from './styles.module.scss'
 
+interface FormValues {
+    email: string
+    password: string
+}
+
+const validate = Yup.object({
+    email: Yup.string().email('Неправильный email адрес').required('*Обязательно'),
+    password: Yup.string()
+        .max(15, 'Должно быть не более 15 символов')
+        .min(6, 'Должно быть не менее 6 символов')
+        .required('*Обязательно'),
+})
+
 export const Login: React.FC = () => {
-    const { values, handleChange, handleSubmit } = useForm(callback)
-
-    function callback() {
-        console.log('send')
-    }
-
     return (
-        <div className={styles.auth}>
-            <div className={styles.logo}>
-                <img src={logo} alt="Logo" />
-            </div>
-            <form className={styles.formLogin} onSubmit={(e) => handleSubmit(e)}>
-                <div className={styles.email}>
-                    <input
-                        id="emailI"
-                        type="text"
-                        name="email"
-                        required
-                        value={values.email}
-                        onChange={(e) => handleChange(e)}
-                    />
-                    <label htmlFor="emailI" className={styles.labelEmail}>
-                        E-mail
-                    </label>
+        <Formik
+            initialValues={{
+                email: '',
+                password: '',
+            }}
+            validationSchema={validate}
+            onSubmit={(values: FormValues) => {
+                console.log(values)
+            }}>
+            {(formik) => (
+                <div className={styles.auth}>
+                    <div className={styles.logo}>
+                        <img src={logo} alt="Logo" />
+                    </div>
+                    <Form className={styles.formLogin} onSubmit={formik.handleSubmit}>
+                        <ErrorMessage name="email" className={styles.errors} component="span" />
+                        <div className={styles.emailBlock}>
+                            <Field type="text" name="email" />
+                            <label htmlFor="email" className={styles.labelEmail}>
+                                E-mail
+                            </label>
+                        </div>
+
+                        <ErrorMessage name="password" className={styles.errors} component="span" />
+                        <div className={styles.passwordBlock}>
+                            <Field type="password" name="password" />
+                            <label htmlFor="password">Password</label>
+                        </div>
+
+                        <button type="submit">Войти</button>
+                    </Form>
+                    <Link to="/register" className={styles.link}>
+                        Регистрация
+                    </Link>
+                    <span className={styles.site}>Hardcore Study</span>
                 </div>
-                <div className={styles.password}>
-                    <input
-                        id="passwordI"
-                        type="password"
-                        name="password"
-                        required
-                        value={values.password}
-                        onChange={(e) => handleChange(e)}
-                    />
-                    <label htmlFor="passwordI">Password</label>
-                </div>
-                <button type="submit">Войти</button>
-            </form>
-            <Link to="/register" className={styles.link}>
-                Регистрация
-            </Link>
-            <span className={styles.site}>Hardcore Study</span>
-        </div>
+            )}
+        </Formik>
     )
 }

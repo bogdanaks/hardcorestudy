@@ -1,38 +1,76 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
 
 import logo from '../../assets/logo.png'
 import styles from './styles.module.scss'
 
+interface FormValues {
+    name: string
+    email: string
+    password: string
+}
+
+const validate = Yup.object<FormValues>({
+    name: Yup.string()
+        .max(20, 'Должно быть не более 20 символов')
+        .min(2, 'Должно быть не менее 2 символов')
+        .required('*Обязательно'),
+    email: Yup.string().email('Неправильный email адрес').required('*Обязательно'),
+    password: Yup.string()
+        .max(15, 'Должно быть не более 15 символов')
+        .min(6, 'Должно быть не менее 6 символов')
+        .required('*Обязательно'),
+})
+
 export const Register: React.FC = () => {
     return (
-        <div className={styles.auth}>
-            <div className={styles.logo}>
-                <img src={logo} alt="Logo" />
-            </div>
-            <form className={styles.formLogin}>
-                <div className={styles.email}>
-                    <input id="nameI" type="text" name="name" required />
-                    <label htmlFor="nameI" className={styles.labelEmail}>
-                        Name
-                    </label>
+        <Formik
+            initialValues={{
+                name: '',
+                email: '',
+                password: '',
+            }}
+            validationSchema={validate}
+            onSubmit={(values: FormValues) => {
+                console.log(values)
+            }}>
+            {(formik) => (
+                <div className={styles.auth}>
+                    <div className={styles.logo}>
+                        <img src={logo} alt="Logo" />
+                    </div>
+                    <Form className={styles.formLogin} onSubmit={formik.handleSubmit}>
+                        <ErrorMessage name="name" className={styles.errors} component="span" />
+                        <div className={styles.emailBlock}>
+                            <Field type="text" name="name" />
+                            <label htmlFor="name" className={styles.labelEmail}>
+                                Name
+                            </label>
+                        </div>
+
+                        <ErrorMessage name="email" className={styles.errors} component="span" />
+                        <div className={styles.emailBlock}>
+                            <Field type="text" name="email" />
+                            <label htmlFor="emailI" className={styles.labelEmail}>
+                                E-mail
+                            </label>
+                        </div>
+
+                        <ErrorMessage name="password" className={styles.errors} component="span" />
+                        <div className={styles.passwordBlock}>
+                            <Field type="password" name="password" />
+                            <label htmlFor="passwordI">Password</label>
+                        </div>
+                        <button type="submit">Зарегистрироваться</button>
+                    </Form>
+                    <Link to="/login" className={styles.link}>
+                        Войти
+                    </Link>
+                    <span className={styles.site}>Hardcore Study</span>
                 </div>
-                <div className={styles.email}>
-                    <input id="emailI" type="text" name="email" required />
-                    <label htmlFor="emailI" className={styles.labelEmail}>
-                        E-mail
-                    </label>
-                </div>
-                <div className={styles.password}>
-                    <input id="passwordI" type="password" name="password" required />
-                    <label htmlFor="passwordI">Password</label>
-                </div>
-                <button>Зарегистрироваться</button>
-            </form>
-            <Link to="/login" className={styles.link}>
-                Войти
-            </Link>
-            <span className={styles.site}>Hardcore Study</span>
-        </div>
+            )}
+        </Formik>
     )
 }
