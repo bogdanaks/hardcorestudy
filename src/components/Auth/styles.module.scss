@@ -58,12 +58,12 @@
         width: 400px;
         margin-bottom: 20px;
 
-        .email {
+        .emailBlock {
             width: 100%;
             margin-bottom: 15px;
             position: relative;
         }
-        .password {
+        .passwordBlock {
             width: 100%;
             margin-bottom: 15px;
             position: relative;
@@ -109,6 +109,13 @@
         input[type='password']:valid + label {
             color: rgba($color: $light, $alpha: 0.4);
             transform: translate(-80px, 0);
+        }
+
+        .errors {
+            align-self: flex-start;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: salmon;
         }
         button {
             width: 100%;
