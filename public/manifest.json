@@ -12,7 +12,8 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "js": ["notif/script.js"]
+            "css": ["app/script.css"],
+            "js": ["app/script.js"]
         }
     ],
     "content_security_policy": "script-src 'self' 'sha256-QlM0JGHbX/dMtSTyJ+mM5lxYDquOJGC66BOGQwIz5Os='; object-src 'self'"
