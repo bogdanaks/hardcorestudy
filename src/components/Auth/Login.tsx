@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 
-import logo from '../../assets/logo.png'
+import { ReactComponent as Logo } from '../../assets/logo.svg'
 import styles from './styles.module.scss'
 
 interface FormValues {
@@ -33,7 +33,7 @@ export const Login: React.FC = () => {
             {(formik) => (
                 <div className={styles.auth}>
                     <div className={styles.logo}>
-                        <img src={logo} alt="Logo" />
+                        <Logo />
                     </div>
                     <Form className={styles.formLogin} onSubmit={formik.handleSubmit}>
                         <ErrorMessage name="email" className={styles.errors} component="span" />
