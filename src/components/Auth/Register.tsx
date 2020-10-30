@@ -2,8 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
+import app from '../../base'
 
-import logo from '../../assets/logo.png'
+import { ReactComponent as Logo } from '../../assets/logo.svg'
 import styles from './styles.module.scss'
 
 interface FormValues {
@@ -25,6 +26,8 @@ const validate = Yup.object<FormValues>({
 })
 
 export const Register: React.FC = () => {
+    const [errors, setErrors] = React.useState<string>('')
+
     return (
         <Formik
             initialValues={{
@@ -33,13 +36,31 @@ export const Register: React.FC = () => {
                 password: '',
             }}
             validationSchema={validate}
-            onSubmit={(values: FormValues) => {
-                console.log(values)
+            onSubmit={async (values: FormValues) => {
+                try {
+                    const data = await app
+                        .auth()
+                        .createUserWithEmailAndPassword(values.email, values.password)
+                    await app.auth().signInWithEmailAndPassword(values.email, values.password)
+                    const userRef = await app.firestore().collection('users').add({
+                        uid: data.user?.uid,
+                        name: values.name,
+                        email: values.email,
+                        password: values.password,
+                    })
+                    await app
+                        .database()
+                        .ref('users')
+                        .push({ name: values.name, email: values.email, password: values.password })
+                    console.log(userRef)
+                } catch (error) {
+                    setErrors(error.message)
+                }
             }}>
             {(formik) => (
                 <div className={styles.auth}>
                     <div className={styles.logo}>
-                        <img src={logo} alt="Logo" />
+                        <Logo />
                     </div>
                     <Form className={styles.formLogin} onSubmit={formik.handleSubmit}>
                         <ErrorMessage name="name" className={styles.errors} component="span" />
@@ -64,6 +85,7 @@ export const Register: React.FC = () => {
                             <label htmlFor="passwordI">Password</label>
                         </div>
                         <button type="submit">Зарегистрироваться</button>
+                        <span className={styles.errorsFin}>{errors}</span>
                     </Form>
                     <Link to="/login" className={styles.link}>
                         Войти
