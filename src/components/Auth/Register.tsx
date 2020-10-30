@@ -2,7 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
-import app from '../../base'
+import { useDispatch } from 'react-redux'
+
+import { regUser } from '../../redux/actions/userAction'
 
 import { ReactComponent as Logo } from '../../assets/logo.svg'
 import styles from './styles.module.scss'
@@ -26,8 +28,7 @@ const validate = Yup.object<FormValues>({
 })
 
 export const Register: React.FC = () => {
-    const [errors, setErrors] = React.useState<string>('')
-
+    const dispatch = useDispatch()
     return (
         <Formik
             initialValues={{
@@ -36,26 +37,8 @@ export const Register: React.FC = () => {
                 password: '',
             }}
             validationSchema={validate}
-            onSubmit={async (values: FormValues) => {
-                try {
-                    const data = await app
-                        .auth()
-                        .createUserWithEmailAndPassword(values.email, values.password)
-                    await app.auth().signInWithEmailAndPassword(values.email, values.password)
-                    const userRef = await app.firestore().collection('users').add({
-                        uid: data.user?.uid,
-                        name: values.name,
-                        email: values.email,
-                        password: values.password,
-                    })
-                    await app
-                        .database()
-                        .ref('users')
-                        .push({ name: values.name, email: values.email, password: values.password })
-                    console.log(userRef)
-                } catch (error) {
-                    setErrors(error.message)
-                }
+            onSubmit={(values: FormValues) => {
+                dispatch(regUser(values.name, values.email, values.password))
             }}>
             {(formik) => (
                 <div className={styles.auth}>
@@ -85,7 +68,6 @@ export const Register: React.FC = () => {
                             <label htmlFor="passwordI">Password</label>
                         </div>
                         <button type="submit">Зарегистрироваться</button>
-                        <span className={styles.errorsFin}>{errors}</span>
                     </Form>
                     <Link to="/login" className={styles.link}>
                         Войти
