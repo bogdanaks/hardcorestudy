@@ -1,28 +1,48 @@
 @import '../../assets/colors.scss';
 
-.auth {
+.authMain {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center !important;
     flex-direction: column;
     height: 100%;
     width: 100%;
     position: relative;
     .logo {
         margin-bottom: 50px;
-        img {
-            width: 80%;
+    }
+}
+
+.auth {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    .logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        svg {
+            width: 60%;
+            fill: rgba(255, 255, 255, 0.2);
         }
     }
-    span {
-        margin-bottom: 20px;
-        color: $light;
-        font-size: 15px;
+    .content {
+        span {
+            display: block;
+            margin-bottom: 10px;
+            color: $light;
+            font-size: 15px;
+        }
     }
+
     .btnsBlock {
         display: flex;
         flex-direction: column;
-        width: 400px;
+        width: 100%;
         button:first-child {
             margin-bottom: 15px;
         }
@@ -114,6 +134,12 @@
         .errors {
             align-self: flex-start;
             margin-bottom: 5px;
+            font-size: 14px;
+            color: salmon;
+        }
+        .errorsFin {
+            align-self: flex-start;
+            margin-top: 5px;
             font-size: 14px;
             color: salmon;
         }
