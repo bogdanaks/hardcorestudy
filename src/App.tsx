@@ -1,6 +1,7 @@
 import React from 'react'
 import { MemoryRouter as Router, Route, Switch } from 'react-router-dom'
 
+import { Alert } from './components/Alert/Alert'
 import { Main } from './components/Main/Main'
 // import { Notifycation } from './components/Notifycation/Notifycation'
 import { Auth } from './components/Auth/Auth'
@@ -18,6 +19,7 @@ export const App = () => {
                     <Route path="/register" component={Register} />
                 </Switch>
             </Router>
+            <Alert />
         </div>
     )
 }
