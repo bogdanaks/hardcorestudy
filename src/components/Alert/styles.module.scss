@@ -1,0 +1,28 @@
+.alertBlock {
+    position: absolute;
+    height: 40px;
+    right: 0;
+    padding: 10px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease-out;
+    font-size: 17px;
+    svg {
+        margin-right: 5px;
+        margin-top: 2px;
+        font-size: 20px;
+    }
+    &.alertError {
+        background-color: rgba($color: rgb(248, 98, 81), $alpha: 0.7);
+    }
+    &.alertInfo {
+        background-color: rgba($color: rgb(114, 145, 201), $alpha: 0.7);
+    }
+    &.alertSuccess {
+        background-color: rgba($color: rgb(82, 139, 82), $alpha: 0.7);
+    }
+}
