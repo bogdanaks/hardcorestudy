@@ -1,0 +1,44 @@
+.loaderBlock {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+        width: 40%;
+        fill: rgba(255, 255, 255, 0.2);
+
+        .load {
+            g[id='leftEye'] {
+                animation: rotatingLeft 1s linear infinite;
+                transform-origin: center;
+                transform-box: fill-box;
+            }
+            g[id='rightEye'] {
+                animation: rotatingRight 1s linear infinite;
+                transform-origin: center;
+                transform-box: fill-box;
+            }
+        }
+    }
+}
+
+@keyframes rotatingLeft {
+    from {
+        transform: rotateZ(0deg);
+        transform-box: fill-box;
+    }
+    to {
+        transform: rotateZ(360deg);
+        transform-box: fill-box;
+    }
+}
+@keyframes rotatingRight {
+    from {
+        transform: rotateZ(360deg);
+    }
+    to {
+        transform: rotateZ(0deg);
+    }
+}
