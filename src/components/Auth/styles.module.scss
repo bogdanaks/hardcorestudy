@@ -149,6 +149,10 @@
             &:hover {
                 background-color: #b49c5f;
             }
+            &:disabled {
+                cursor: wait;
+                background-color: rgba(180, 156, 95, 0.4);
+            }
         }
     }
     .link {
@@ -168,4 +172,35 @@
     bottom: 0;
     color: $light;
     margin: 0 !important;
+}
+
+.load {
+    g[id='leftEye'] {
+        animation: rotatingLeft 1s linear infinite;
+        transform-origin: center;
+        transform-box: fill-box;
+    }
+    g[id='rightEye'] {
+        animation: rotatingRight 1s linear infinite;
+        transform-origin: center;
+        transform-box: fill-box;
+    }
+}
+@keyframes rotatingLeft {
+    from {
+        transform: rotateZ(0deg);
+        transform-box: fill-box;
+    }
+    to {
+        transform: rotateZ(360deg);
+        transform-box: fill-box;
+    }
+}
+@keyframes rotatingRight {
+    from {
+        transform: rotateZ(360deg);
+    }
+    to {
+        transform: rotateZ(0deg);
+    }
 }
