@@ -1,5 +1,5 @@
 import produce, { Draft } from 'immer'
-import { UserTypes, UserState } from '../types/userTypes'
+import { UserTypes, UserState, UserActionTypes } from '../types/userTypes'
 
 const initialState: UserState = {
     user: JSON.parse(localStorage.getItem('user')!) || {
@@ -9,7 +9,7 @@ const initialState: UserState = {
     },
 }
 
-export const userReducer = produce((draft: Draft<UserState>, action) => {
+export const userReducer = produce((draft: Draft<UserState>, action: UserActionTypes) => {
     switch (action.type) {
         case UserTypes.REG_USER:
             draft.user = action.payload
@@ -23,5 +23,6 @@ export const userReducer = produce((draft: Draft<UserState>, action) => {
                 email: '',
                 name: '',
             }
+            break
     }
 }, initialState)
