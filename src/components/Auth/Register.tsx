@@ -1,13 +1,14 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { regUser } from '../../redux/actions/userAction'
 
 import { ReactComponent as Logo } from '../../assets/logo.svg'
 import styles from './styles.module.scss'
+import { RootState } from '../../redux/types/rootTypes'
 
 interface FormValues {
     name: string
@@ -29,6 +30,9 @@ const validate = Yup.object<FormValues>({
 
 export const Register: React.FC = () => {
     const dispatch = useDispatch()
+    const loader = useSelector((state: RootState) => state.app.loader)
+    const history = useHistory()
+
     return (
         <Formik
             initialValues={{
@@ -38,12 +42,12 @@ export const Register: React.FC = () => {
             }}
             validationSchema={validate}
             onSubmit={(values: FormValues) => {
-                dispatch(regUser(values.name, values.email, values.password))
+                dispatch(regUser(values.name, values.email, values.password, history))
             }}>
             {(formik) => (
                 <div className={styles.auth}>
                     <div className={styles.logo}>
-                        <Logo />
+                        <Logo className={[styles.svg, loader ? styles.load : ''].join(' ')} />
                     </div>
                     <Form className={styles.formLogin} onSubmit={formik.handleSubmit}>
                         <ErrorMessage name="name" className={styles.errors} component="span" />
@@ -67,7 +71,9 @@ export const Register: React.FC = () => {
                             <Field type="password" name="password" />
                             <label htmlFor="passwordI">Password</label>
                         </div>
-                        <button type="submit">Зарегистрироваться</button>
+                        <button type="submit" disabled={loader && true}>
+                            Зарегистрироваться
+                        </button>
                     </Form>
                     <Link to="/login" className={styles.link}>
                         Войти
