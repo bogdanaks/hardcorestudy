@@ -4,6 +4,8 @@ import { ThunkAction } from 'redux-thunk'
 // enums
 export enum UserTypes {
     REG_USER = 'USER/REG_USER',
+    LOGIN_USER = 'USER/LOGIN_USER',
+    EXIT_USER = 'USER/EXIT_USER',
 }
 
 // initialState
@@ -28,5 +30,9 @@ interface RegUserAction {
     type: typeof UserTypes.REG_USER
     payload: UserState
 }
+interface LoginUserAction {
+    type: typeof UserTypes.LOGIN_USER
+    payload: UserState
+}
 
-export type UserActionTypes = RegUserAction
+export type UserActionTypes = RegUserAction | LoginUserAction
