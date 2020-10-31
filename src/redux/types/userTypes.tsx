@@ -9,12 +9,13 @@ export enum UserTypes {
 }
 
 // initialState
+type User = {
+    id: string
+    name: string
+    email: string
+}
 export interface UserState {
-    user: {
-        id: string
-        name: string
-        email: string
-    }
+    user: User
 }
 
 //thunk type
@@ -28,11 +29,14 @@ export type UserThunk<ReturnType = void> = ThunkAction<
 // actions
 interface RegUserAction {
     type: typeof UserTypes.REG_USER
-    payload: UserState
+    payload: User
 }
 interface LoginUserAction {
     type: typeof UserTypes.LOGIN_USER
-    payload: UserState
+    payload: User
+}
+interface ExitUserAction {
+    type: typeof UserTypes.EXIT_USER
 }
 
-export type UserActionTypes = RegUserAction | LoginUserAction
+export type UserActionTypes = RegUserAction | LoginUserAction | ExitUserAction
