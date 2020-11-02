@@ -1,8 +1,20 @@
 @import './assets/colors.scss';
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'IBMSans';
+}
+
+@font-face {
+    font-family: 'IBMSans';
+    src: local('IBMSans'), url(./assets/Ibmplexsanstext.woff) format('woff');
+}
+
+@font-face {
+    font-family: 'IBMBold';
+    src: local('IBMBold'), url(./assets/Ibmplexsansbold.woff) format('woff');
 }
 
 body {
@@ -32,7 +44,7 @@ code {
     border-radius: 3px;
     box-shadow: 0px 5px 10px rgba($color: #000000, $alpha: 0.5);
     padding: 15px;
-    background-color: $dark;
+    background-color: $mainDark;
     position: relative;
     overflow: hidden;
 }
