@@ -52,30 +52,32 @@ export const Register: React.FC = () => {
                     <Form className={styles.formLogin} onSubmit={formik.handleSubmit}>
                         <ErrorMessage name="name" className={styles.errors} component="span" />
                         <div className={styles.emailBlock}>
-                            <Field type="text" name="name" />
-                            <label htmlFor="name" className={styles.labelEmail}>
+                            <Field type="text" name="name" id="name" required />
+                            <label htmlFor="name" className={styles.labelName}>
                                 Name
                             </label>
                         </div>
 
                         <ErrorMessage name="email" className={styles.errors} component="span" />
                         <div className={styles.emailBlock}>
-                            <Field type="text" name="email" />
-                            <label htmlFor="emailI" className={styles.labelEmail}>
+                            <Field type="text" name="email" id="email" required />
+                            <label htmlFor="email" className={styles.labelEmail}>
                                 E-mail
                             </label>
                         </div>
 
                         <ErrorMessage name="password" className={styles.errors} component="span" />
                         <div className={styles.passwordBlock}>
-                            <Field type="password" name="password" />
-                            <label htmlFor="passwordI">Password</label>
+                            <Field type="password" name="password" id="password" required />
+                            <label htmlFor="password" className={styles.labelPassword}>
+                                Password
+                            </label>
                         </div>
-                        <button type="submit" disabled={loader && true}>
+                        <button type="submit" disabled={loader && true} className={styles.btnReg}>
                             Зарегистрироваться
                         </button>
                     </Form>
-                    <Link to="/login" className={styles.link}>
+                    <Link to="/login" className={styles.linkLogin}>
                         Войти
                     </Link>
                     <span className={styles.site}>Hardcore Study</span>

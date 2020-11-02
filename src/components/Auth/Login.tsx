@@ -46,7 +46,7 @@ export const Login: React.FC = () => {
                     <Form className={styles.formLogin} onSubmit={formik.handleSubmit}>
                         <ErrorMessage name="email" className={styles.errors} component="span" />
                         <div className={styles.emailBlock}>
-                            <Field type="text" name="email" />
+                            <Field type="text" name="email" id="email" required />
                             <label htmlFor="email" className={styles.labelEmail}>
                                 E-mail
                             </label>
@@ -54,13 +54,17 @@ export const Login: React.FC = () => {
 
                         <ErrorMessage name="password" className={styles.errors} component="span" />
                         <div className={styles.passwordBlock}>
-                            <Field type="password" name="password" />
-                            <label htmlFor="password">Password</label>
+                            <Field type="password" name="password" id="password" required />
+                            <label htmlFor="password" className={styles.labelPassword}>
+                                Password
+                            </label>
                         </div>
 
-                        <button type="submit">Войти</button>
+                        <button type="submit" className={styles.btnLogin}>
+                            Войти
+                        </button>
                     </Form>
-                    <Link to="/register" className={styles.link}>
+                    <Link to="/register" className={styles.linkReg}>
                         Регистрация
                     </Link>
                     <span className={styles.site}>Hardcore Study</span>

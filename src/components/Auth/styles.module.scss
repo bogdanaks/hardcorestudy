@@ -27,15 +27,16 @@
         justify-content: center;
         svg {
             width: 60%;
-            fill: rgba(255, 255, 255, 0.2);
+            fill: #4e4957;
         }
     }
     .content {
         span {
             display: block;
             margin-bottom: 10px;
-            color: $light;
+            color: $white;
             font-size: 15px;
+            font-family: 'IBMSans';
         }
     }
 
@@ -46,28 +47,30 @@
         button:first-child {
             margin-bottom: 15px;
         }
-        button {
-            height: 30px;
-            width: 100%;
-            background: none;
-            border: none;
-            border-radius: 2px;
-            outline: none;
-            padding: 0 10px;
-            font-weight: bold;
-            cursor: pointer;
-            color: $light;
+    }
+    button {
+        height: 30px;
+        width: 100%;
+        background: none;
+        border: none;
+        border-radius: 2px;
+        outline: none;
+        padding: 0 10px;
+        font-weight: bold;
+        cursor: pointer;
+        color: $white;
+        font-family: 'IBMBold';
+    }
+    .btnReg {
+        border: 0.5px solid $orange;
+        &:hover {
+            border: 2px solid $orange;
         }
-        .btnReg {
-            background-color: $orange;
-            color: #1d2345;
-        }
-        .btnLogin {
-            border: 0.5px solid $light2;
-            transition: all 0.2s ease;
-            &:hover {
-                border: 0.5px solid #6782b1;
-            }
+    }
+    .btnLogin {
+        border: 0.5px solid $blue;
+        &:hover {
+            border: 2px solid $blue;
         }
     }
     .formLogin {
@@ -89,45 +92,59 @@
             position: relative;
         }
         label {
-            display: inline-block;
-            margin-bottom: 5px;
-            color: rgba($color: $dark, $alpha: 0.6);
+            display: flex;
+            align-items: center;
+            color: rgba($color: $gray, $alpha: 1);
             position: absolute;
-            left: 8px;
+            left: 10px;
             bottom: 0;
             cursor: text;
-            transition: all 0.2s ease;
-            font-size: 14px;
-
+            transition: all 0.3s ease;
+            font-size: 12px;
             width: 60px;
+            height: 30px;
         }
         input {
             width: 100%;
             height: 30px;
             border: none;
             outline: none;
-            background-color: $light;
+            background-color: $secondDark;
             padding: 0 10px;
             border-radius: 3px;
-            color: $dark;
+            color: $white;
+            font-family: 'IBMBold';
+            font-size: 14px;
+            &:focus {
+                border: 1px solid $blue;
+            }
+            &:-webkit-autofill {
+                &,
+                &:hover,
+                &:focus,
+                &:active {
+                    transition-delay: 9999s;
+                    transition-property: background-color, color;
+                }
+            }
         }
-        input:focus + label {
-            color: rgba($color: $light, $alpha: 0.4);
-            transform: translate(-80px, 0);
-        }
-
-        input[type='text']:valid + label {
-            color: rgba($color: $light, $alpha: 0.4);
-            transform: translate(-80px, 0);
-        }
-        input[type='text']:valid + .labelEmail {
+        input:focus + .labelName {
             transform: translate(-60px, 0);
         }
         input:focus + .labelEmail {
             transform: translate(-60px, 0);
         }
-        input[type='password']:valid + label {
-            color: rgba($color: $light, $alpha: 0.4);
+        input:focus + .labelPassword {
+            transform: translate(-80px, 0);
+        }
+
+        input[type='text']:valid + .labelName {
+            transform: translate(-60px, 0);
+        }
+        input[type='text']:valid + .labelEmail {
+            transform: translate(-60px, 0);
+        }
+        input[type='password']:valid + .labelPassword {
             transform: translate(-80px, 0);
         }
 
@@ -135,34 +152,20 @@
             align-self: flex-start;
             margin-bottom: 5px;
             font-size: 14px;
-            color: salmon;
-        }
-        button {
-            width: 100%;
-            height: 30px;
-            border: none;
-            background-color: #aa986b;
-            border-radius: 3px;
-            cursor: pointer;
-            color: $textD;
-            font-weight: 700;
-            &:hover {
-                background-color: #b49c5f;
-            }
-            &:disabled {
-                cursor: wait;
-                background-color: rgba(180, 156, 95, 0.4);
-            }
+            color: $red;
         }
     }
-    .link {
+    .linkLogin {
+        color: $blue;
+        text-decoration: none;
+        font-size: 17px;
+        font-weight: 700;
+    }
+    .linkReg {
         color: $orange;
         text-decoration: none;
         font-size: 17px;
         font-weight: 700;
-        &:hover {
-            color: $light2;
-        }
     }
 }
 
@@ -170,7 +173,7 @@
     position: absolute;
     left: 0;
     bottom: 0;
-    color: $light;
+    color: $white;
     margin: 0 !important;
 }
 
