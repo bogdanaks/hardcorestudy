@@ -14,7 +14,6 @@ export const regUser = (name: string, email: string, password: string, history: 
                 id: data.user?.uid,
                 name,
                 email,
-                password,
             })
             await app.auth().currentUser?.updateProfile({ displayName: name })
             localStorage.setItem('user', JSON.stringify({ id: data.user?.uid, name, email }))
@@ -66,6 +65,7 @@ export const exitUser = (history: any): UserThunk => {
             localStorage.removeItem('user')
             dispatch({ type: UserTypes.EXIT_USER })
             history.push('/auth')
+            dispatch(hideLoader())
         } catch (error) {
             dispatch(hideLoader())
             const id = uuidv4()
