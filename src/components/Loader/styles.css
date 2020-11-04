@@ -1,0 +1,27 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: calc(100vh - 70px);
+}
+.loader {
+    display: inline-block;
+    width: 5em;
+    height: 5em;
+    color: inherit;
+    vertical-align: middle;
+    pointer-events: none;
+    border-top: 1.5em solid currentcolor;
+    border-right: 1.5em solid transparent;
+    animation: loader-19 1s linear infinite;
+    border-radius: 100%;
+    position: relative;
+    color: #2264d1;
+}
+
+@keyframes loader-19 {
+    to {
+        transform: rotate(360deg);
+    }
+}

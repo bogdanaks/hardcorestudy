@@ -1,12 +1,10 @@
 import React from 'react'
 
-import styles from './styles.module.scss'
-import { ReactComponent as Logo } from '../../assets/logo.svg'
-
-export const Loader = () => {
+import './styles.css'
+export const Loader: React.FC = () => {
     return (
-        <div className={styles.loaderBlock}>
-            <Logo className={styles.icon} />
+        <div className="wrapper">
+            <div className="loader"></div>
         </div>
     )
 }
