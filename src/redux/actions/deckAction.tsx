@@ -10,16 +10,16 @@ export const fetchDecks = (): DeckThunk => {
             dispatch(showLoader())
             const { id: creatorId } = await JSON.parse(localStorage.getItem('user')!)
 
-            const decks = await app
-                .firestore()
-                .collection('decks')
-                .where('creatorId', '==', creatorId)
-                .get()
+            const decks = await app.firestore().collection(`users/${creatorId}/decks`).get()
 
             const resDecks = await Promise.all(
                 decks.docs.map(async (deck) => {
                     const cardsCount = await (
-                        await app.firestore().doc(`decks/${deck.id}`).collection('cards').get()
+                        await app
+                            .firestore()
+                            .doc(`users/${creatorId}/decks/${deck.id}`)
+                            .collection('cards')
+                            .get()
                     ).docs.length
                     return {
                         ...deck.data(),
@@ -47,10 +47,10 @@ export const addDeck = (): DeckThunk => {
             dispatch(showLoader())
             const { id: creatorId } = await JSON.parse(localStorage.getItem('user')!)
             const newDeck = {
-                creatorId,
                 title: 'No title',
-                description: 'Description test',
+                description: 'No description',
                 color: 'blue',
+
                 date: new Date().valueOf(),
             }
             const deck = await app
@@ -58,7 +58,10 @@ export const addDeck = (): DeckThunk => {
                 .doc(`users/${creatorId}`)
                 .collection('decks')
                 .add(newDeck)
-            dispatch({ type: DeckTypes.ADD_DECK, payload: { id: deck.id, ...newDeck } })
+            dispatch({
+                type: DeckTypes.ADD_DECK,
+                payload: { id: deck.id, cardsCount: 0, ...newDeck },
+            })
             dispatch(hideLoader())
         } catch (error) {
             dispatch(hideLoader())

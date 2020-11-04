@@ -8,10 +8,10 @@ export const fetchCards = (deckId: string): CardThunk => {
     return async (dispatch) => {
         try {
             dispatch(showLoader())
+            const { id: creatorId } = await JSON.parse(localStorage.getItem('user')!)
             const cards = await app
                 .firestore()
-                .collection('cards')
-                .where('deckId', '==', deckId)
+                .collection(`users/${creatorId}/decks/${deckId}/cards`)
                 .get()
 
             const resCards = cards.docs.map((card) => {
@@ -40,8 +40,8 @@ export const addCard = (deckId: string): CardThunk => {
             const { id: creatorId } = await JSON.parse(localStorage.getItem('user')!)
             const card = await app
                 .firestore()
-                .collection('cards')
-                .add({ deckId, creatorId, question: 'No question', answer: 'No answer' })
+                .collection(`users/${creatorId}/decks/${deckId}/cards`)
+                .add({ question: 'No question', answer: 'No answer' })
             dispatch({
                 type: CardTypes.ADD_CARD,
                 payload: { id: card.id, question: 'No question' },

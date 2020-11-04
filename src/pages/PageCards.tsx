@@ -18,7 +18,6 @@ export const PageCards: React.FC = () => {
     }, [])
     const { deckId }: { deckId: string } = useParams()
 
-    console.log(cards.length)
     if (loader) return <Loader />
     if (cards.length === 0) return <NoneCards deckId={deckId} />
     return <Cards cards={cards} deckId={deckId} />

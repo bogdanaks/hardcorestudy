@@ -10,8 +10,7 @@ export const regUser = (name: string, email: string, password: string, history: 
             dispatch(showLoader())
             const data = await app.auth().createUserWithEmailAndPassword(email, password)
             await app.auth().signInWithEmailAndPassword(email, password)
-            await app.firestore().collection('users').add({
-                id: data.user?.uid,
+            await app.firestore().collection('users').doc(data.user?.uid).set({
                 name,
                 email,
             })
@@ -19,7 +18,7 @@ export const regUser = (name: string, email: string, password: string, history: 
             localStorage.setItem('user', JSON.stringify({ id: data.user?.uid, name, email }))
             dispatch({ type: UserTypes.REG_USER, payload: { id: data.user?.uid, name, email } })
             dispatch(hideLoader())
-            history.push('/')
+            history.push('/decks')
         } catch (error) {
             dispatch(hideLoader())
             const id = uuidv4()
@@ -45,7 +44,7 @@ export const loginUser = (email: string, password: string, history: any): UserTh
                 payload: { id: data.user?.uid, name: data.user?.displayName, email },
             })
             dispatch(hideLoader())
-            history.push('/')
+            history.push('/decks')
         } catch (error) {
             dispatch(hideLoader())
             const id = uuidv4()

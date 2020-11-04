@@ -24,7 +24,7 @@ export const Deck: React.FC<DeckProps> = ({ title, description, date, cardsCount
                     <p>{description}</p>
                 </div>
                 <div className={styles.footer}>
-                    <span>{cardsCount ? cardsCount : 42} cards</span>
+                    <span>{cardsCount} cards</span>
                     <span className={styles.data}>{`${monthEn} ${day}, ${year}`}</span>
                 </div>
             </div>

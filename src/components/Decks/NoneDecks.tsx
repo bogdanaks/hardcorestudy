@@ -17,7 +17,7 @@ export const NoneDecks: React.FC = () => {
                 <h2>Вы еще не создали ни одной колоды.</h2>
                 <p>Создайте колоду на любую интересующую вас тему</p>
                 <div onClick={handleClickCreateDeck}>
-                    <Button color={'blue'} title={'Create deck'} />
+                    <Button color={'blue'} title={'Создать колоду'} />
                 </div>
             </div>
         </div>
