@@ -1,7 +1,9 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
-import { confirmAlert } from 'react-confirm-alert'
 import { useDispatch } from 'react-redux'
+
+import { Confirm as ConfirmBlock } from '../Confirm/Confirm'
+import { useConfirm } from '../../utils/hooks/useConfirm/useConfirm'
 
 import { delCard } from '../../redux/actions/cardAction'
 
@@ -19,37 +21,20 @@ interface CardProps {
 
 export const CardMin: React.FC<CardProps> = ({ card, deckId, number }) => {
     const dispatch = useDispatch()
+    const {
+        Confirm: ConfirmCardDel,
+        show: showCardConfirm,
+        hide: hideCardConfirm,
+        propsConfirm,
+    } = useConfirm({
+        cardId: card.id,
+    })
+
     const deleteCard = (cardId: string) => {
         dispatch(delCard(deckId, cardId))
         if (number === 1) {
             return <Redirect to={`/decks/${cardId}`} />
         }
-    }
-
-    const handleConfirmCardShow = () => {
-        confirmAlert({
-            customUI: ({ onClose }) => {
-                return (
-                    <div className={styles.confirmBlock}>
-                        <h2>Удаление карточки</h2>
-                        <p>Вы уверены, что хотите удалить эту карточку?</p>
-                        <div className={styles.btnsConfirm}>
-                            <button className={styles.btnCancel} onClick={onClose}>
-                                Нет
-                            </button>
-                            <button
-                                className={styles.btnDel}
-                                onClick={() => {
-                                    deleteCard(card.id)
-                                    onClose()
-                                }}>
-                                Да, удалить
-                            </button>
-                        </div>
-                    </div>
-                )
-            },
-        })
     }
     return (
         <>
@@ -61,10 +46,19 @@ export const CardMin: React.FC<CardProps> = ({ card, deckId, number }) => {
                 <button className={styles.editBtn}>
                     <FiEdit2 />
                 </button>
-                <button onClick={handleConfirmCardShow} className={styles.trashBtn}>
+                <button onClick={showCardConfirm} className={styles.trashBtn}>
                     <FiTrash />
                 </button>
             </div>
+            <ConfirmCardDel>
+                <ConfirmBlock
+                    title="Удаление карточки"
+                    desc="Вы уверены, что хотите удалить эту карточку?"
+                    hideConfirm={hideCardConfirm}
+                    yesConfirm={() => deleteCard(card.id)}
+                    propsConfirm={propsConfirm}
+                />
+            </ConfirmCardDel>
         </>
     )
 }
