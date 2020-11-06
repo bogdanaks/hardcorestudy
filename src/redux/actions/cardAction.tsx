@@ -12,6 +12,7 @@ export const fetchCards = (deckId: string): CardThunk => {
             const cards = await app
                 .firestore()
                 .collection(`users/${creatorId}/decks/${deckId}/cards`)
+                .orderBy('date', 'desc')
                 .get()
 
             const resCards = cards.docs.map((card) => {
@@ -33,18 +34,45 @@ export const fetchCards = (deckId: string): CardThunk => {
     }
 }
 
-export const addCard = (deckId: string): CardThunk => {
+export const addCard = (deckId: string, question: string, answer: string): CardThunk => {
     return async (dispatch) => {
         try {
             dispatch(showLoader())
             const { id: creatorId } = await JSON.parse(localStorage.getItem('user')!)
+            const newCard = {
+                question,
+                answer,
+                date: new Date().valueOf(),
+            }
             const card = await app
                 .firestore()
                 .collection(`users/${creatorId}/decks/${deckId}/cards`)
-                .add({ question: 'No question', answer: 'No answer' })
+                .add(newCard)
             dispatch({
                 type: CardTypes.ADD_CARD,
-                payload: { id: card.id, question: 'No question' },
+                payload: { id: card.id, ...newCard },
+            })
+            dispatch(hideLoader())
+        } catch (error) {
+            dispatch(hideLoader())
+            const id = uuidv4()
+            dispatch(showAlert({ type: 'error', id, message: error.message }))
+            setTimeout(() => {
+                dispatch(hideAlert(id))
+            }, 3000)
+        }
+    }
+}
+
+export const delCard = (deckId: string, cardId: string): CardThunk => {
+    return async (dispatch) => {
+        try {
+            dispatch(showLoader())
+            const { id: creatorId } = await JSON.parse(localStorage.getItem('user')!)
+            await app.firestore().doc(`users/${creatorId}/decks/${deckId}/cards/${cardId}`).delete()
+            dispatch({
+                type: CardTypes.DELETE_CARD,
+                payload: cardId,
             })
             dispatch(hideLoader())
         } catch (error) {

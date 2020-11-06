@@ -17,7 +17,7 @@ export const PageDecks: React.FC = () => {
         // eslint-disable-next-line
     }, [])
 
-    if (loader) return <Loader />
+    if (loader && decks.length === 0) return <Loader />
     if (decks.length === 0) return <NoneDecks />
     return <Decks decks={decks} />
 }

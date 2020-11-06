@@ -1,15 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 
 import styles from './styles.module.scss'
 
 import { Deck } from './Deck'
 import { Input } from '../Input/Input'
 import { Button } from '../Button/Button'
+import { ModalDeck } from '../Modal/ModalDeck'
 
 import { Deck as DeckType } from '../../redux/types/deckTypes'
-import { addDeck } from '../../redux/actions/deckAction'
 
 interface DecksProps {
     deckId?: string | undefined
@@ -17,9 +16,10 @@ interface DecksProps {
 }
 
 export const Decks: React.FC<DecksProps> = ({ deckId, decks }) => {
-    const dispatch = useDispatch()
+    const [showModal, setShowModal] = React.useState<boolean>(false)
+
     const handleClickCreateDeck = () => {
-        dispatch(addDeck())
+        setShowModal(!showModal)
     }
 
     return (
@@ -38,6 +38,7 @@ export const Decks: React.FC<DecksProps> = ({ deckId, decks }) => {
                                 <Deck
                                     title={deck.title}
                                     description={deck.description}
+                                    color={deck.color}
                                     date={deck.date}
                                     cardsCount={deck.cardsCount}
                                     active={deckId === deck.id ? true : false}
@@ -47,6 +48,7 @@ export const Decks: React.FC<DecksProps> = ({ deckId, decks }) => {
                     })}
                 </div>
             </div>
+            {showModal && <ModalDeck setShowModal={setShowModal} />}
         </div>
     )
 }
