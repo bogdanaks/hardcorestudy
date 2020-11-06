@@ -10,7 +10,11 @@ export const fetchDecks = (): DeckThunk => {
             dispatch(showLoader())
             const { id: creatorId } = await JSON.parse(localStorage.getItem('user')!)
 
-            const decks = await app.firestore().collection(`users/${creatorId}/decks`).get()
+            const decks = await app
+                .firestore()
+                .collection(`users/${creatorId}/decks`)
+                .orderBy('date', 'desc')
+                .get()
 
             const resDecks = await Promise.all(
                 decks.docs.map(async (deck) => {
@@ -41,16 +45,38 @@ export const fetchDecks = (): DeckThunk => {
     }
 }
 
-export const addDeck = (): DeckThunk => {
+export const setActiveDeck = (deckId: string): DeckThunk => {
     return async (dispatch) => {
         try {
             dispatch(showLoader())
             const { id: creatorId } = await JSON.parse(localStorage.getItem('user')!)
-            const newDeck = {
-                title: 'No title',
-                description: 'No description',
-                color: 'blue',
+            const deck = await app.firestore().doc(`users/${creatorId}/decks/${deckId}`).get()
+            dispatch({
+                type: DeckTypes.SET_ACTIVE_DECK,
+                payload: { id: deck.id, ...deck.data() },
+            })
+            dispatch(hideLoader())
+        } catch (error) {
+            dispatch(hideLoader())
+            const id = uuidv4()
+            dispatch(showAlert({ type: 'error', id, message: error.message }))
+            setTimeout(() => {
+                dispatch(hideAlert(id))
+            }, 3000)
+        }
+    }
+}
 
+export const addDeck = (title: string, color: string, description?: string): DeckThunk => {
+    return async (dispatch) => {
+        try {
+            dispatch(showLoader())
+            const { id: creatorId } = await JSON.parse(localStorage.getItem('user')!)
+            const desc = description !== undefined ? description : ''
+            const newDeck = {
+                title,
+                description: desc,
+                color,
                 date: new Date().valueOf(),
             }
             const deck = await app
@@ -61,6 +87,28 @@ export const addDeck = (): DeckThunk => {
             dispatch({
                 type: DeckTypes.ADD_DECK,
                 payload: { id: deck.id, cardsCount: 0, ...newDeck },
+            })
+            dispatch(hideLoader())
+        } catch (error) {
+            dispatch(hideLoader())
+            const id = uuidv4()
+            dispatch(showAlert({ type: 'error', id, message: error.message }))
+            setTimeout(() => {
+                dispatch(hideAlert(id))
+            }, 3000)
+        }
+    }
+}
+
+export const delDeck = (deckId: string): DeckThunk => {
+    return async (dispatch) => {
+        try {
+            dispatch(showLoader())
+            const { id: creatorId } = await JSON.parse(localStorage.getItem('user')!)
+            await app.firestore().doc(`users/${creatorId}/decks/${deckId}`).delete()
+            dispatch({
+                type: DeckTypes.DELETE_DECK,
+                payload: deckId,
             })
             dispatch(hideLoader())
         } catch (error) {
