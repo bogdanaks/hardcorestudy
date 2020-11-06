@@ -25,6 +25,21 @@ export const ModalDeck: React.FC<{
 }> = ({ setShowModal }) => {
     const [color, setColor] = React.useState<string>('blue')
     const dispatch = useDispatch()
+    const modalRef = React.useRef<HTMLDivElement>(null)
+    React.useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+                setShowModal(false)
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+            setShowModal(false)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
     return (
         <div className={styles.wrapper}>
             <Formik
@@ -38,7 +53,7 @@ export const ModalDeck: React.FC<{
                     setShowModal(false)
                 }}>
                 {(formik) => (
-                    <div className={styles.modalBlock}>
+                    <div className={styles.modalBlock} ref={modalRef}>
                         <h2>Создание новой колоды</h2>
                         <Form onSubmit={formik.handleSubmit}>
                             <ErrorMessage name="title" className={styles.errors} component="span" />
