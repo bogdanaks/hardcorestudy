@@ -100,17 +100,28 @@ export const addDeck = (title: string, color: string, description?: string): Dec
     }
 }
 
-export const delDeck = (deckId: string): DeckThunk => {
+export const delDeck = (deckId: string, history: any): DeckThunk => {
     return async (dispatch) => {
         try {
             dispatch(showLoader())
             const { id: creatorId } = await JSON.parse(localStorage.getItem('user')!)
+            const cards = await app
+                .firestore()
+                .collection(`users/${creatorId}/decks/${deckId}/cards`)
+                .get()
+
+            await cards.docs.map(async (card) => {
+                await card.ref.delete()
+            })
+
             await app.firestore().doc(`users/${creatorId}/decks/${deckId}`).delete()
+
             dispatch({
                 type: DeckTypes.DELETE_DECK,
                 payload: deckId,
             })
             dispatch(hideLoader())
+            history.push('/decks')
         } catch (error) {
             dispatch(hideLoader())
             const id = uuidv4()
