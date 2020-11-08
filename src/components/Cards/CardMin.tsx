@@ -7,11 +7,11 @@ import { useConfirm } from '../../utils/hooks/useConfirm/useConfirm'
 
 import { delCard } from '../../redux/actions/cardAction'
 
-import 'react-confirm-alert/src/react-confirm-alert.css'
 import styles from './styles.module.scss'
 
 import { FiEdit2, FiTrash } from 'react-icons/fi'
 import { Card } from '../../redux/types/cardTypes'
+import { ModalCard } from '../Modal/ModalCard'
 
 interface CardProps {
     card: Card
@@ -21,6 +21,7 @@ interface CardProps {
 
 export const CardMin: React.FC<CardProps> = ({ card, deckId, number }) => {
     const dispatch = useDispatch()
+    const [showModalEdit, setShowModalEdit] = React.useState<boolean>(false)
     const {
         Confirm: ConfirmCardDel,
         show: showCardConfirm,
@@ -43,7 +44,7 @@ export const CardMin: React.FC<CardProps> = ({ card, deckId, number }) => {
                 <span className={styles.questionMin}>{card.question}</span>
                 <div className={styles.lineBetwen}></div>
                 <span className={styles.answerMin}>{card.answer}</span>
-                <button className={styles.editBtn}>
+                <button onClick={() => setShowModalEdit(true)} className={styles.editBtn}>
                     <FiEdit2 />
                 </button>
                 <button onClick={showCardConfirm} className={styles.trashBtn}>
@@ -59,6 +60,16 @@ export const CardMin: React.FC<CardProps> = ({ card, deckId, number }) => {
                     propsConfirm={propsConfirm}
                 />
             </ConfirmCardDel>
+            {showModalEdit && (
+                <ModalCard
+                    type="edit"
+                    setShowModal={setShowModalEdit}
+                    deckId={deckId}
+                    questionValue={card.question}
+                    answerValue={card.answer}
+                    cardId={card.id}
+                />
+            )}
         </>
     )
 }
