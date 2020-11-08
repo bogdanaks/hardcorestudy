@@ -24,6 +24,7 @@ import { delCard } from '../../redux/actions/cardAction'
 import { delDeck } from '../../redux/actions/deckAction'
 import { Deck } from '../../redux/types/deckTypes'
 import { useConfirm } from '../../utils/hooks/useConfirm/useConfirm'
+import { ModalDeck } from '../Modal/ModalDeck'
 
 interface CardsProps {
     deckId: string
@@ -33,13 +34,12 @@ interface CardsProps {
 
 export const Cards: React.FC<CardsProps> = ({ cards, deckId, activeDeck }) => {
     const [isSelectedCard, setIsSelectedCard] = React.useState<number>(0)
-    const [showModal, setShowModal] = React.useState<boolean>(false)
+    const [showModalCreate, setShowModalCreate] = React.useState<boolean>(false)
+    const [showModalEdit, setShowModalEdit] = React.useState<boolean>(false)
+    const [showModalDeckEdit, setShowModalDeckEdit] = React.useState<boolean>(false)
     const dispatch = useDispatch()
     const history = useHistory()
 
-    const handleNewCard = () => {
-        setShowModal(true)
-    }
     const deleteDeck = () => {
         dispatch(delDeck(deckId, history))
     }
@@ -68,29 +68,11 @@ export const Cards: React.FC<CardsProps> = ({ cards, deckId, activeDeck }) => {
 
     return (
         <div className={styles.wrapper}>
-            <ConfirmCardDel>
-                <Confirm
-                    title="Удаление карточки"
-                    desc="Вы уверены, что хотите удалить эту карточку?"
-                    hideConfirm={hideCardConfirm}
-                    yesConfirm={deleteCard}
-                    propsConfirm={propsConfirm}
-                />
-            </ConfirmCardDel>
-            <ConfirmDeckDel>
-                <Confirm
-                    title="Удаление колоды"
-                    desc="Вы уверены, что хотите удалить колоду и все карточки внутри?"
-                    hideConfirm={hideDeckConfirm}
-                    yesConfirm={deleteDeck}
-                    propsConfirm={propsConfirmDeck}
-                />
-            </ConfirmDeckDel>
             <div className={styles.container}>
                 <div className={styles.header}>
                     <h2>{`${activeDeck.title}(${cards.length})`}</h2>
                     <div className={styles.btnsHeader}>
-                        <button>
+                        <button onClick={() => setShowModalDeckEdit(true)}>
                             <FiEdit2 />
                         </button>
                         <button onClick={showDeckConfirm}>
@@ -120,10 +102,10 @@ export const Cards: React.FC<CardsProps> = ({ cards, deckId, activeDeck }) => {
                         <button onClick={() => showCardConfirm()}>
                             Удалить карточку <FiTrash />
                         </button>
-                        <button>
+                        <button onClick={() => setShowModalEdit(true)}>
                             Изменить карточку <FiEdit />
                         </button>
-                        <button onClick={handleNewCard}>
+                        <button onClick={() => setShowModalCreate(true)}>
                             Создать карточку <FiPlusSquare />
                         </button>
                     </div>
@@ -144,7 +126,47 @@ export const Cards: React.FC<CardsProps> = ({ cards, deckId, activeDeck }) => {
                     </ul>
                 </div>
             </div>
-            {showModal && <ModalCard setShowModal={setShowModal} deckId={deckId} />}
+            <ConfirmCardDel>
+                <Confirm
+                    title="Удаление карточки"
+                    desc="Вы уверены, что хотите удалить эту карточку?"
+                    hideConfirm={hideCardConfirm}
+                    yesConfirm={deleteCard}
+                    propsConfirm={propsConfirm}
+                />
+            </ConfirmCardDel>
+            <ConfirmDeckDel>
+                <Confirm
+                    title="Удаление колоды"
+                    desc="Вы уверены, что хотите удалить колоду и все карточки внутри?"
+                    hideConfirm={hideDeckConfirm}
+                    yesConfirm={deleteDeck}
+                    propsConfirm={propsConfirmDeck}
+                />
+            </ConfirmDeckDel>
+            {showModalEdit && (
+                <ModalCard
+                    type="edit"
+                    setShowModal={setShowModalEdit}
+                    deckId={deckId}
+                    questionValue={cards[isSelectedCard].question}
+                    answerValue={cards[isSelectedCard].answer}
+                    cardId={cards[isSelectedCard].id}
+                />
+            )}
+            {showModalCreate && (
+                <ModalCard type="create" setShowModal={setShowModalCreate} deckId={deckId} />
+            )}
+            {showModalDeckEdit && (
+                <ModalDeck
+                    type="edit"
+                    setShowModal={setShowModalDeckEdit}
+                    titleValue={activeDeck.title}
+                    descriptionValue={activeDeck.description}
+                    colorValue={activeDeck.color}
+                    deckId={deckId}
+                />
+            )}
         </div>
     )
 }
