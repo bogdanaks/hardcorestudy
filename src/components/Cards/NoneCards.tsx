@@ -15,7 +15,7 @@ export const NoneCards: React.FC<{ deckId: string }> = ({ deckId }) => {
                     <Button color={'blue'} title={'Создать карту'} />
                 </div>
             </div>
-            {showModal && <ModalCard setShowModal={setShowModal} deckId={deckId} />}
+            {showModal && <ModalCard type="create" setShowModal={setShowModal} deckId={deckId} />}
         </div>
     )
 }
