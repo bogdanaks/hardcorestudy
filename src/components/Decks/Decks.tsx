@@ -48,7 +48,7 @@ export const Decks: React.FC<DecksProps> = ({ deckId, decks }) => {
                     })}
                 </div>
             </div>
-            {showModal && <ModalDeck setShowModal={setShowModal} />}
+            {showModal && <ModalDeck type="create" setShowModal={setShowModal} />}
         </div>
     )
 }
