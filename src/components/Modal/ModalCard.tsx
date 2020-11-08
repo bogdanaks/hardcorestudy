@@ -5,7 +5,7 @@ import * as Yup from 'yup'
 
 import styles from './styles.module.scss'
 
-import { addCard } from '../../redux/actions/cardAction'
+import { addCard, editCard } from '../../redux/actions/cardAction'
 
 interface FormValues {
     question: string
@@ -13,7 +13,11 @@ interface FormValues {
 }
 
 interface ModalCardProps {
+    type: 'create' | 'edit'
     deckId: string
+    questionValue?: string
+    answerValue?: string
+    cardId?: string
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -28,7 +32,14 @@ const validate = Yup.object({
         .required('*Обязательно'),
 })
 
-export const ModalCard: React.FC<ModalCardProps> = ({ deckId, setShowModal }) => {
+export const ModalCard: React.FC<ModalCardProps> = ({
+    type,
+    deckId,
+    setShowModal,
+    questionValue,
+    answerValue,
+    cardId,
+}) => {
     const dispatch = useDispatch()
     const modalRef = React.useRef<HTMLDivElement>(null)
     React.useEffect(() => {
@@ -49,17 +60,23 @@ export const ModalCard: React.FC<ModalCardProps> = ({ deckId, setShowModal }) =>
         <div className={styles.wrapper}>
             <Formik
                 initialValues={{
-                    question: '',
-                    answer: '',
+                    question: questionValue || '',
+                    answer: answerValue || '',
                 }}
                 validationSchema={validate}
                 onSubmit={(values: FormValues) => {
-                    dispatch(addCard(deckId, values.question, values.answer))
+                    if (type === 'create') {
+                        dispatch(addCard(deckId, values.question, values.answer))
+                    } else {
+                        dispatch(editCard(deckId, cardId!, values.question, values.answer))
+                    }
                     setShowModal(false)
                 }}>
                 {(formik) => (
                     <div className={[styles.modalBlock, styles.modalCard].join(' ')} ref={modalRef}>
-                        <h2>Создание новой карточки</h2>
+                        <h2>
+                            {type === 'create' ? 'Создание новой карточки' : 'Изменение карточки'}
+                        </h2>
                         <Form onSubmit={formik.handleSubmit}>
                             <ErrorMessage
                                 name="question"
@@ -95,7 +112,9 @@ export const ModalCard: React.FC<ModalCardProps> = ({ deckId, setShowModal }) =>
                             </div>
                             <div className={styles.controls}>
                                 <button onClick={() => setShowModal(false)}>Отмена</button>
-                                <button type="submit">Создать</button>
+                                <button type="submit">
+                                    {type === 'create' ? 'Создать' : 'Сохранить'}
+                                </button>
                             </div>
                         </Form>
                     </div>
