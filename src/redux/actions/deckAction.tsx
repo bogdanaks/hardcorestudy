@@ -132,3 +132,35 @@ export const delDeck = (deckId: string, history: any): DeckThunk => {
         }
     }
 }
+
+export const editDeck = (
+    deckId: string,
+    title: string,
+    description: string,
+    color: string,
+): DeckThunk => {
+    return async (dispatch) => {
+        try {
+            dispatch(showLoader())
+            const { id: creatorId } = await JSON.parse(localStorage.getItem('user')!)
+            const deck = await app.firestore().doc(`users/${creatorId}/decks/${deckId}`)
+            await deck.update({
+                title,
+                description,
+                color,
+            })
+            dispatch({
+                type: DeckTypes.EDIT_DECK,
+                payload: { id: deckId, title, description, color },
+            })
+            dispatch(hideLoader())
+        } catch (error) {
+            dispatch(hideLoader())
+            const id = uuidv4()
+            dispatch(showAlert({ type: 'error', id, message: error.message }))
+            setTimeout(() => {
+                dispatch(hideAlert(id))
+            }, 3000)
+        }
+    }
+}
