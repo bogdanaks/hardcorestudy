@@ -42,8 +42,13 @@
 
     &.darkInput {
         input {
-            background-color: $black;
+            background-color: $cardBlack;
             color: $white;
+        }
+        svg {
+            path {
+                fill: $white;
+            }
         }
     }
     &.lightInput {

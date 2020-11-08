@@ -5,9 +5,10 @@ import styles from './styles.module.scss'
 interface ButtonProps {
     color: 'blue' | 'red' | 'green'
     title: string
+    theme: 'light' | 'dark'
 }
 
-export const Button: React.FC<ButtonProps> = ({ color, title }) => (
+export const Button: React.FC<ButtonProps> = ({ color, title, theme }) => (
     <button
         className={[
             styles.btn,
@@ -16,6 +17,7 @@ export const Button: React.FC<ButtonProps> = ({ color, title }) => (
                 : color === 'red'
                 ? styles.redBtn
                 : color === 'green' && styles.greenBtn,
+            theme === 'dark' ? styles.dark : '',
         ].join(' ')}>
         {title}
     </button>

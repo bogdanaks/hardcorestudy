@@ -13,6 +13,35 @@
     align-items: center;
     opacity: 0;
     animation: fade 0.2s 0.1s forwards;
+
+    &.dark {
+        background: rgba(0, 0, 0, 0.8);
+        .modalBlock {
+            background-color: $blackDark;
+            h2 {
+                color: $white;
+            }
+            label {
+                color: $white;
+            }
+            input {
+                background-color: $cardBlack;
+                color: $white;
+            }
+            textarea {
+                background-color: $cardBlack;
+                color: $white;
+            }
+            .controls {
+                button {
+                    &:first-child {
+                        background: $redDark;
+                    }
+                }
+            }
+        }
+    }
+
     .modalBlock {
         display: flex;
         align-items: center;

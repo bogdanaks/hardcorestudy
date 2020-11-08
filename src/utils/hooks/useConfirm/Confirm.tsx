@@ -6,9 +6,10 @@ import styles from './styles.module.scss'
 interface ModalProps {
     children: any
     setIsActive: React.Dispatch<React.SetStateAction<boolean>>
+    theme: 'dark' | 'light'
 }
 
-export const Confirm = memo<ModalProps>(({ children, setIsActive }) => {
+export const Confirm = memo<ModalProps>(({ children, setIsActive, theme }) => {
     const body = document.body
     const modalRef = useRef<HTMLDivElement>(null)
     useEffect(() => {
@@ -28,7 +29,7 @@ export const Confirm = memo<ModalProps>(({ children, setIsActive }) => {
     if (!body) return null
 
     return createPortal(
-        <div className={styles.wrapperConfirm}>
+        <div className={[styles.wrapperConfirm, theme === 'dark' ? styles.dark : ''].join(' ')}>
             <div className={styles.modalConfirm} ref={modalRef}>
                 {children}
             </div>

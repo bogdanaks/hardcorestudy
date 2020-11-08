@@ -17,9 +17,10 @@ interface CardProps {
     card: Card
     deckId: string
     number: number
+    theme: 'dark' | 'light'
 }
 
-export const CardMin: React.FC<CardProps> = ({ card, deckId, number }) => {
+export const CardMin: React.FC<CardProps> = ({ card, deckId, number, theme }) => {
     const dispatch = useDispatch()
     const [showModalEdit, setShowModalEdit] = React.useState<boolean>(false)
     const {
@@ -27,9 +28,7 @@ export const CardMin: React.FC<CardProps> = ({ card, deckId, number }) => {
         show: showCardConfirm,
         hide: hideCardConfirm,
         propsConfirm,
-    } = useConfirm({
-        cardId: card.id,
-    })
+    } = useConfirm({ theme, cardId: card.id })
 
     const deleteCard = (cardId: string) => {
         dispatch(delCard(deckId, cardId))
@@ -58,6 +57,7 @@ export const CardMin: React.FC<CardProps> = ({ card, deckId, number }) => {
                     hideConfirm={hideCardConfirm}
                     yesConfirm={() => deleteCard(card.id)}
                     propsConfirm={propsConfirm}
+                    theme={theme}
                 />
             </ConfirmCardDel>
             {showModalEdit && (
@@ -68,6 +68,7 @@ export const CardMin: React.FC<CardProps> = ({ card, deckId, number }) => {
                     questionValue={card.question}
                     answerValue={card.answer}
                     cardId={card.id}
+                    theme={theme}
                 />
             )}
         </>

@@ -10,6 +10,7 @@ interface ConfirmProps {
     propsConfirm: {
         [propName: string]: any
     }
+    theme: 'dark' | 'light'
 }
 
 export const Confirm = ({
@@ -18,9 +19,10 @@ export const Confirm = ({
     hideConfirm,
     yesConfirm,
     propsConfirm,
+    theme,
 }: ConfirmProps): JSX.Element => {
     return (
-        <div className={styles.confirmBlock}>
+        <div className={[styles.confirmBlock, theme === 'dark' ? styles.dark : ''].join(' ')}>
             <h2>{title}</h2>
             <p>{desc}</p>
             <div className={styles.btnsConfirm}>

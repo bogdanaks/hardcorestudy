@@ -4,6 +4,8 @@ import { AppTypes, AppState } from '../types/appTypes'
 const initialState: AppState = {
     alert: [],
     loader: false,
+    // @ts-ignore
+    theme: localStorage.getItem('theme') || 'light',
 }
 
 export const appReducer = produce((draft: Draft<AppState>, action) => {
@@ -19,6 +21,9 @@ export const appReducer = produce((draft: Draft<AppState>, action) => {
             break
         case AppTypes.HIDE_LOADER:
             draft.loader = false
+            break
+        case AppTypes.SET_THEME:
+            draft.theme = action.payload
             break
     }
 }, initialState)

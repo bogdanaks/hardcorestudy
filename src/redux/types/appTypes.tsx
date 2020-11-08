@@ -5,6 +5,8 @@ export enum AppTypes {
 
     SHOW_LOADER = 'APP/SHOW_LOADER',
     HIDE_LOADER = 'APP/HIDE_LOADER',
+
+    SET_THEME = 'APP/SET_THEME',
 }
 
 //types
@@ -18,4 +20,5 @@ export interface Alert {
 export interface AppState {
     alert: Alert[]
     loader: boolean
+    theme: 'light' | 'dark'
 }

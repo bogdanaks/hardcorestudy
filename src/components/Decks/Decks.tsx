@@ -13,9 +13,10 @@ import { Deck as DeckType } from '../../redux/types/deckTypes'
 interface DecksProps {
     deckId?: string | undefined
     decks: DeckType[]
+    theme: 'dark' | 'light'
 }
 
-export const Decks: React.FC<DecksProps> = ({ deckId, decks }) => {
+export const Decks: React.FC<DecksProps> = ({ deckId, decks, theme }) => {
     const [showModal, setShowModal] = React.useState<boolean>(false)
 
     const handleClickCreateDeck = () => {
@@ -23,12 +24,12 @@ export const Decks: React.FC<DecksProps> = ({ deckId, decks }) => {
     }
 
     return (
-        <div className={styles.container}>
+        <div className={[styles.container, theme === 'dark' ? styles.dark : ''].join(' ')}>
             <div className={styles.decks}>
                 <div className={styles.header}>
-                    <Input color={'light'} />
+                    <Input color={theme} />
                     <div className={styles.btn} onClick={handleClickCreateDeck}>
-                        <Button color={'blue'} title={'Новая колода'} />
+                        <Button color={'blue'} title={'Новая колода'} theme={theme} />
                     </div>
                 </div>
                 <div className={styles.decksContainer}>
@@ -48,7 +49,7 @@ export const Decks: React.FC<DecksProps> = ({ deckId, decks }) => {
                     })}
                 </div>
             </div>
-            {showModal && <ModalDeck type="create" setShowModal={setShowModal} />}
+            {showModal && <ModalDeck type="create" setShowModal={setShowModal} theme={theme} />}
         </div>
     )
 }

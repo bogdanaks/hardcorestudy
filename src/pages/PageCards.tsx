@@ -14,6 +14,7 @@ export const PageCards: React.FC = () => {
     const loader = useSelector((state: RootState) => state.app.loader)
     const cards = useSelector((state: RootState) => state.cards.cards)
     const activeDeck = useSelector((state: RootState) => state.decks.activeDeck)
+    const theme = useSelector((state: RootState) => state.app.theme)
     React.useEffect(() => {
         dispatch(setActiveDeck(deckId))
         dispatch(fetchCards(deckId))
@@ -21,7 +22,7 @@ export const PageCards: React.FC = () => {
     }, [])
     const { deckId }: { deckId: string } = useParams()
 
-    if (loader && cards.length === 0) return <Loader />
-    if (cards.length === 0) return <NoneCards deckId={deckId} />
-    return <Cards cards={cards} deckId={deckId} activeDeck={activeDeck} />
+    if (loader && cards.length === 0) return <Loader theme={theme} />
+    if (cards.length === 0) return <NoneCards deckId={deckId} theme={theme} />
+    return <Cards cards={cards} deckId={deckId} activeDeck={activeDeck} theme={theme} />
 }

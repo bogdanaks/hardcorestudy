@@ -19,6 +19,7 @@ interface ModalDeckProps {
     descriptionValue?: string
     colorValue?: string
     deckId?: string
+    theme: 'dark' | 'light'
 }
 
 const validate = Yup.object({
@@ -36,6 +37,7 @@ export const ModalDeck: React.FC<ModalDeckProps> = ({
     descriptionValue,
     colorValue,
     deckId,
+    theme,
 }) => {
     const [color, setColor] = React.useState<string>(colorValue || 'blue')
     const dispatch = useDispatch()
@@ -55,7 +57,7 @@ export const ModalDeck: React.FC<ModalDeckProps> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     return (
-        <div className={styles.wrapper}>
+        <div className={[styles.wrapper, theme === 'dark' ? styles.dark : ''].join(' ')}>
             <Formik
                 initialValues={{
                     title: titleValue || '',

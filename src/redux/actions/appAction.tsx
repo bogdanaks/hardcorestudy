@@ -15,3 +15,9 @@ export const showLoader = () => {
 export const hideLoader = () => {
     return { type: AppTypes.HIDE_LOADER }
 }
+
+// Loader actions
+export const setTheme = (theme: 'dark' | 'light') => {
+    localStorage.setItem('theme', theme)
+    return { type: AppTypes.SET_THEME, payload: theme }
+}

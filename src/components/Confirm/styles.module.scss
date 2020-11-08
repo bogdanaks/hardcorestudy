@@ -7,6 +7,19 @@
     flex-direction: column;
     margin: 20px;
     width: 400px;
+
+    &.dark {
+        background-color: $cardBlack;
+        color: $white !important;
+        h2 {
+            color: $white;
+        }
+        button {
+            &.btnDel {
+                background-color: $redDark !important;
+            }
+        }
+    }
     h2 {
         color: $black;
         margin-bottom: 5px;

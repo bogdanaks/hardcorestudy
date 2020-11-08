@@ -9,6 +9,15 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    &.dark {
+        background-color: $blackDark;
+        h2 {
+            color: $white;
+        }
+        p {
+            color: $white;
+        }
+    }
     .container {
         text-align: center;
         width: 400px;
@@ -34,6 +43,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &.dark {
+        background-color: $blackDark;
+        .decks {
+            background-color: $blackDark;
+        }
+    }
+
     .decks {
         width: 1100px;
         min-height: calc(100vh - 70px);

@@ -30,9 +30,10 @@ interface CardsProps {
     deckId: string
     cards: CardType[]
     activeDeck: Deck
+    theme: 'dark' | 'light'
 }
 
-export const Cards: React.FC<CardsProps> = ({ cards, deckId, activeDeck }) => {
+export const Cards: React.FC<CardsProps> = ({ cards, deckId, activeDeck, theme }) => {
     const [isSelectedCard, setIsSelectedCard] = React.useState<number>(0)
     const [showModalCreate, setShowModalCreate] = React.useState<boolean>(false)
     const [showModalEdit, setShowModalEdit] = React.useState<boolean>(false)
@@ -56,18 +57,16 @@ export const Cards: React.FC<CardsProps> = ({ cards, deckId, activeDeck }) => {
         show: showCardConfirm,
         hide: hideCardConfirm,
         propsConfirm,
-    } = useConfirm({
-        cardId: cards[isSelectedCard].id,
-    })
+    } = useConfirm({ theme, cardId: cards[isSelectedCard].id })
     const {
         Confirm: ConfirmDeckDel,
         show: showDeckConfirm,
         hide: hideDeckConfirm,
         propsConfirm: propsConfirmDeck,
-    } = useConfirm({ deckId })
+    } = useConfirm({ theme, deckId })
 
     return (
-        <div className={styles.wrapper}>
+        <div className={[styles.wrapper, theme === 'dark' ? styles.dark : ''].join(' ')}>
             <div className={styles.container}>
                 <div className={styles.header}>
                     <h2>{`${activeDeck.title}(${cards.length})`}</h2>
@@ -112,14 +111,19 @@ export const Cards: React.FC<CardsProps> = ({ cards, deckId, activeDeck }) => {
                 </div>
                 <div className={styles.headerBottom}>
                     <h2>Спиcок всех карточек</h2>
-                    <Input color="light" />
+                    <Input color={theme} />
                 </div>
                 <div className={styles.cardsList}>
                     <ul>
                         {cards.map((card, index) => {
                             return (
                                 <li key={card.id}>
-                                    <CardMin card={card} deckId={deckId} number={index + 1} />
+                                    <CardMin
+                                        card={card}
+                                        deckId={deckId}
+                                        number={index + 1}
+                                        theme={theme}
+                                    />
                                 </li>
                             )
                         })}
@@ -133,6 +137,7 @@ export const Cards: React.FC<CardsProps> = ({ cards, deckId, activeDeck }) => {
                     hideConfirm={hideCardConfirm}
                     yesConfirm={deleteCard}
                     propsConfirm={propsConfirm}
+                    theme={theme}
                 />
             </ConfirmCardDel>
             <ConfirmDeckDel>
@@ -142,6 +147,7 @@ export const Cards: React.FC<CardsProps> = ({ cards, deckId, activeDeck }) => {
                     hideConfirm={hideDeckConfirm}
                     yesConfirm={deleteDeck}
                     propsConfirm={propsConfirmDeck}
+                    theme={theme}
                 />
             </ConfirmDeckDel>
             {showModalEdit && (
@@ -152,10 +158,16 @@ export const Cards: React.FC<CardsProps> = ({ cards, deckId, activeDeck }) => {
                     questionValue={cards[isSelectedCard].question}
                     answerValue={cards[isSelectedCard].answer}
                     cardId={cards[isSelectedCard].id}
+                    theme={theme}
                 />
             )}
             {showModalCreate && (
-                <ModalCard type="create" setShowModal={setShowModalCreate} deckId={deckId} />
+                <ModalCard
+                    type="create"
+                    setShowModal={setShowModalCreate}
+                    deckId={deckId}
+                    theme={theme}
+                />
             )}
             {showModalDeckEdit && (
                 <ModalDeck
@@ -165,6 +177,7 @@ export const Cards: React.FC<CardsProps> = ({ cards, deckId, activeDeck }) => {
                     descriptionValue={activeDeck.description}
                     colorValue={activeDeck.color}
                     deckId={deckId}
+                    theme={theme}
                 />
             )}
         </div>

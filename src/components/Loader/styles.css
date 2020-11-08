@@ -5,6 +5,9 @@
     width: 100%;
     min-height: calc(100vh - 70px);
 }
+.wrapper.dark {
+    background-color: #17151c !important;
+}
 .loader {
     display: inline-block;
     width: 5em;

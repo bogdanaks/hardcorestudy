@@ -19,6 +19,7 @@ interface ModalCardProps {
     answerValue?: string
     cardId?: string
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    theme: 'dark' | 'light'
 }
 
 const validate = Yup.object({
@@ -39,6 +40,7 @@ export const ModalCard: React.FC<ModalCardProps> = ({
     questionValue,
     answerValue,
     cardId,
+    theme,
 }) => {
     const dispatch = useDispatch()
     const modalRef = React.useRef<HTMLDivElement>(null)
@@ -57,7 +59,7 @@ export const ModalCard: React.FC<ModalCardProps> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     return (
-        <div className={styles.wrapper}>
+        <div className={[styles.wrapper, theme === 'dark' ? styles.dark : ''].join(' ')}>
             <Formik
                 initialValues={{
                     question: questionValue || '',
