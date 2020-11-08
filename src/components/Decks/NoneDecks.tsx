@@ -17,7 +17,7 @@ export const NoneDecks: React.FC = () => {
                     <Button color={'blue'} title={'Создать колоду'} />
                 </div>
             </div>
-            {showModal && <ModalDeck setShowModal={setShowModal} />}
+            {showModal && <ModalDeck type="create" setShowModal={setShowModal} />}
         </div>
     )
 }
