@@ -1,0 +1,10 @@
+@import '../../assets/colors.scss';
+
+.wrapper {
+    height: calc(100vh - 70px);
+    color: $black;
+    &.dark {
+        background-color: $blackDark;
+        color: $white;
+    }
+}
