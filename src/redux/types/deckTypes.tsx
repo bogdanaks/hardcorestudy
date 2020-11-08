@@ -7,6 +7,7 @@ export enum DeckTypes {
     SET_ACTIVE_DECK = 'DECK/SET_ACTIVE_DECK',
     ADD_DECK = 'DECK/ADD_DECK',
     DELETE_DECK = 'DECK/DELETE_DECK',
+    EDIT_DECK = 'DECK/EDIT_DECK',
 }
 
 // initialState
@@ -48,5 +49,14 @@ interface DelDeckAction {
     type: typeof DeckTypes.DELETE_DECK
     payload: string
 }
+interface EditDeckAction {
+    type: typeof DeckTypes.EDIT_DECK
+    payload: Deck
+}
 
-export type DeckActionTypes = FetchDeckAction | SetActiveDeckAction | AddDeckAction | DelDeckAction
+export type DeckActionTypes =
+    | FetchDeckAction
+    | SetActiveDeckAction
+    | AddDeckAction
+    | DelDeckAction
+    | EditDeckAction

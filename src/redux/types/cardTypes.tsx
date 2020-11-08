@@ -6,6 +6,7 @@ export enum CardTypes {
     FETCH_CARDS = 'CARD/FETCH_CARDS',
     ADD_CARD = 'CARD/ADD_CARD',
     DELETE_CARD = 'CARD/DELETE_CARD',
+    EDIT_CARD = 'CARD/EDIT_CARD',
 }
 
 // initialState
@@ -41,5 +42,9 @@ interface DelCardAction {
     type: typeof CardTypes.DELETE_CARD
     payload: string
 }
+interface EditCardAction {
+    type: typeof CardTypes.EDIT_CARD
+    payload: Card
+}
 
-export type CardActionTypes = FetchCardAction | AddCardAction | DelCardAction
+export type CardActionTypes = FetchCardAction | AddCardAction | DelCardAction | EditCardAction

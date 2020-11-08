@@ -16,5 +16,10 @@ export const cardReducer = produce((draft: Draft<CardState>, action: CardActionT
         case CardTypes.DELETE_CARD:
             draft.cards = draft.cards.filter((card) => card.id !== action.payload)
             break
+        case CardTypes.EDIT_CARD:
+            const indx = draft.cards.findIndex((el) => el.id === action.payload.id)
+            draft.cards[indx].question = action.payload.question
+            draft.cards[indx].answer = action.payload.answer
+            break
     }
 }, initialState)

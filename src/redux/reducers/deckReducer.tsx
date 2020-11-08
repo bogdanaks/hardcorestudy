@@ -27,5 +27,16 @@ export const deckReducer = produce((draft: Draft<DeckState>, action: DeckActionT
         case DeckTypes.DELETE_DECK:
             draft.decks = draft.decks.filter((deck) => deck.id !== action.payload)
             break
+        case DeckTypes.EDIT_DECK:
+            // const indx = draft.decks.findIndex((el) => el.id === action.payload.id)
+            // draft.cards[indx].question = action.payload.question
+            // draft.cards[indx].answer = action.payload.answer
+            draft.activeDeck = {
+                ...draft.activeDeck,
+                title: action.payload.title,
+                description: action.payload.description,
+                color: action.payload.color,
+            }
+            break
     }
 }, initialState)
