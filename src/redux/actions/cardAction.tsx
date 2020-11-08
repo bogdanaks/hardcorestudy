@@ -85,3 +85,36 @@ export const delCard = (deckId: string, cardId: string): CardThunk => {
         }
     }
 }
+
+export const editCard = (
+    deckId: string,
+    cardId: string,
+    question: string,
+    answer: string,
+): CardThunk => {
+    return async (dispatch) => {
+        try {
+            dispatch(showLoader())
+            const { id: creatorId } = await JSON.parse(localStorage.getItem('user')!)
+            const card = await app
+                .firestore()
+                .doc(`users/${creatorId}/decks/${deckId}/cards/${cardId}`)
+            await card.update({
+                question,
+                answer,
+            })
+            dispatch({
+                type: CardTypes.EDIT_CARD,
+                payload: { id: cardId, question, answer },
+            })
+            dispatch(hideLoader())
+        } catch (error) {
+            dispatch(hideLoader())
+            const id = uuidv4()
+            dispatch(showAlert({ type: 'error', id, message: error.message }))
+            setTimeout(() => {
+                dispatch(hideAlert(id))
+            }, 3000)
+        }
+    }
+}
