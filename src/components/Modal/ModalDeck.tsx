@@ -5,11 +5,20 @@ import * as Yup from 'yup'
 
 import styles from './styles.module.scss'
 
-import { addDeck } from '../../redux/actions/deckAction'
+import { addDeck, editDeck } from '../../redux/actions/deckAction'
 
 interface FormValues {
     title: string
     description: string
+}
+
+interface ModalDeckProps {
+    type: 'create' | 'edit'
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    titleValue?: string
+    descriptionValue?: string
+    colorValue?: string
+    deckId?: string
 }
 
 const validate = Yup.object({
@@ -20,10 +29,15 @@ const validate = Yup.object({
     description: Yup.string().max(200, 'Должно быть не более 200 символов'),
 })
 
-export const ModalDeck: React.FC<{
-    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
-}> = ({ setShowModal }) => {
-    const [color, setColor] = React.useState<string>('blue')
+export const ModalDeck: React.FC<ModalDeckProps> = ({
+    type,
+    setShowModal,
+    titleValue,
+    descriptionValue,
+    colorValue,
+    deckId,
+}) => {
+    const [color, setColor] = React.useState<string>(colorValue || 'blue')
     const dispatch = useDispatch()
     const modalRef = React.useRef<HTMLDivElement>(null)
     React.useEffect(() => {
@@ -44,17 +58,21 @@ export const ModalDeck: React.FC<{
         <div className={styles.wrapper}>
             <Formik
                 initialValues={{
-                    title: '',
-                    description: '',
+                    title: titleValue || '',
+                    description: descriptionValue || '',
                 }}
                 validationSchema={validate}
                 onSubmit={(values: FormValues) => {
-                    dispatch(addDeck(values.title, color, values.description))
+                    if (type === 'create') {
+                        dispatch(addDeck(values.title, color, values.description))
+                    } else {
+                        dispatch(editDeck(deckId!, values.title, values.description, color))
+                    }
                     setShowModal(false)
                 }}>
                 {(formik) => (
                     <div className={styles.modalBlock} ref={modalRef}>
-                        <h2>Создание новой колоды</h2>
+                        <h2>{type === 'create' ? 'Создание новой колоды' : 'Изменение колоды'}</h2>
                         <Form onSubmit={formik.handleSubmit}>
                             <ErrorMessage name="title" className={styles.errors} component="span" />
                             <div className={styles.titleBlock}>
@@ -123,7 +141,9 @@ export const ModalDeck: React.FC<{
                             </div>
                             <div className={styles.controls}>
                                 <button onClick={() => setShowModal(false)}>Отмена</button>
-                                <button type="submit">Создать</button>
+                                <button type="submit">
+                                    {type === 'create' ? 'Создать' : 'Изменить'}
+                                </button>
                             </div>
                         </Form>
                     </div>
