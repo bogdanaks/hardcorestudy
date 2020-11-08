@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { Alert } from './components/Alert/Alert'
 import { AuthRoute } from './utils/AuthRoute'
 import { Navbar } from './components/Navbar/Navbar'
-import { PageHome } from './pages/PageHome'
+import { PageHome } from './pages/PageHome/PageHome'
 import { PageLogin } from './pages/Auth/PageLogin'
 import { PageDecks } from './pages/PageDecks'
 import { PageCards } from './pages/PageCards'
@@ -12,7 +12,7 @@ import { PageRegister } from './pages/Auth/PageRegister'
 
 export const App = () => {
     return (
-        <div className="App">
+        <div className="App ">
             <Router>
                 <Navbar />
                 <Switch>
